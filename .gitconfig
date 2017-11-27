@@ -1,0 +1,7 @@
+[alias]
+	st = status
+	p = push
+	todo = !ag \"//.*(TODO|FIXME)\"
+	last = log -n 1
+[core]
+	excludesfile = ~/.gitignore

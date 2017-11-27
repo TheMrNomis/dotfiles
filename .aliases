@@ -1,0 +1,18 @@
+#common aliases
+alias ls='ls --color=auto'
+alias make='make -j'
+
+#vim, not vi
+alias vi="vim"
+alias view="vim -R"
+
+#clipboard from term
+alias ctrlc='xclip -selection clipboard -i'
+alias ctrlv='xclip -selection clipboard -o'
+
+#git aliases for those monday mornings
+alias tig=git
+alias itg=git
+alias gti=git
+alias igt=git
+alias tgi=git

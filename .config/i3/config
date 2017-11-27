@@ -1,0 +1,209 @@
+# i3 config file (v4)
+#
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+# vars
+# {
+    set $alt Mod1
+    set $fn  Mod2
+    set $win Mod4
+
+    set $TERM termite
+# }
+
+# screens
+# {
+    set $screen_internal eDP-1
+    set $screen_left DP-2-1
+    set $screen_right DP-2-2
+# }
+
+# workspaces
+# {
+    set $ws0 0:
+    set $ws_browser 1:
+    set $ws2 2:
+    set $ws3 3:
+    set $ws4 4:
+    set $ws5 5:5
+    set $ws6 6:6
+    set $ws7 7:7
+    set $ws8 8:8
+    set $ws_steam 9:
+    set $ws_music 10:
+
+    workspace "$ws0" output $screen_internal
+    workspace "$ws_browser" output $screen_left
+    workspace "$ws2" output $screen_right
+    workspace "$ws3" output $screen_left
+    workspace "$ws4" output $screen_right
+    workspace "$ws_music" output $screen_left
+# }
+
+# options
+# {
+    # fonts
+    font pango:DejaVu Sans Mono, FontAwesome, siji 8
+
+    #remove X bell
+    exec "xset -b"
+# }
+
+# keybindings
+# {
+    # use Alt-Mouse to drag floating windows to their wanted positions
+    floating_modifier $alt
+
+    # terminal
+    bindsym $win+T exec $TERM
+
+    # kill focused window
+    bindsym $alt+F4 kill
+    bindsym $win+q  kill
+
+    # dmenu
+    bindsym $win+space exec --no-startup-id i3-dmenu-desktop
+
+    # focus containers
+    bindsym $win+Left focus left
+    bindsym $win+Down focus down
+    bindsym $win+Up focus up
+    bindsym $win+Right focus right
+
+    # move containers
+    bindsym $win+Shift+Left move left
+    bindsym $win+Shift+Down move down
+    bindsym $win+Shift+Up move up
+    bindsym $win+Shift+Right move right
+
+    # splitting
+    bindsym $alt+h split h
+    bindsym $alt+v split v
+
+    # fullscreen
+    bindsym $alt+f fullscreen toggle
+
+    # change container layout
+    bindsym $alt+s layout stacking
+    bindsym $alt+w layout tabbed
+    bindsym $alt+e layout toggle split
+
+    # toggle tiling / floating
+    bindsym $alt+Shift+space floating toggle
+
+    # focus parent / child
+    bindsym $alt+a focus parent
+    bindsym $alt+d focus child
+
+    # switch to workspace
+    bindsym $win+dollar workspace $ws0
+    bindsym $win+1 workspace $ws_browser
+    bindsym $win+2 workspace $ws2
+    bindsym $win+3 workspace $ws3
+    bindsym $win+4 workspace $ws4
+    bindsym $win+5 workspace $ws5
+    bindsym $win+6 workspace $ws6
+    bindsym $win+7 workspace $ws7
+    bindsym $win+8 workspace $ws8
+    bindsym $win+9 workspace $ws_steam
+    bindsym $win+0 workspace $ws_music
+
+    # move focused containter to workspace
+    bindsym $win+Shift+dollar move container to workspace $ws0
+    bindsym $win+Shift+1 move container to workspace $ws_browser
+    bindsym $win+Shift+2 move container to workspace $ws2
+    bindsym $win+Shift+3 move container to workspace $ws3
+    bindsym $win+Shift+4 move container to workspace $ws4
+    bindsym $win+Shift+5 move container to workspace $ws5
+    bindsym $win+Shift+6 move container to workspace $ws6
+    bindsym $win+Shift+7 move container to workspace $ws7
+    bindsym $win+Shift+8 move container to workspace $ws8
+    bindsym $win+Shift+9 move container to workspace $ws_steam
+    bindsym $win+Shift+0 move container to workspace $ws_music
+
+    # move to other screen
+    bindsym $alt+Shift+Left move workspace to output left
+    bindsym $alt+Shift+Right move workspace to output right
+
+    # i3 exit/reload
+    bindsym $alt+Shift+c reload
+    bindsym $alt+Shift+r restart
+    bindsym $alt+Shift+e exec "i3-msg exit"
+
+    # multimedia
+    bindsym $alt+XF86AudioPlay exec --no-startup-id "~/.config/i3/scripts/currentlyplaying.sh"
+    bindsym XF86AudioPlay exec --no-startup-id "playerctl play-pause; ~/.config/i3/scripts/currentlyplaying.sh"
+    bindsym XF86AudioNext exec --no-startup-id "playerctl next"
+    bindsym XF86AudioPrev exec --no-startup-id "playerctl previous"
+
+# }
+
+# bar
+bar {
+    #command
+    #status_command i3status
+    status_command "i3blocks -c ~/.config/i3/i3blocks"
+
+    # keymappings
+    bindsym button4 nop #scroll up
+    bindsym button5 nop #scroll down
+
+    # options
+    strip_workspace_numbers yes
+
+    # colors
+    colors {
+        background #120b07
+        separator #801311
+    }
+}
+
+# assignments
+# {
+    assign [instance="Navigator"] workspace $ws_browser
+    # workaround for bad spotify behavior
+    for_window [instance="spotify"] move to workspace $ws_music
+# }
+
+# layouts
+# {
+    exec --no-startup-id "i3-msg 'workspace $ws0; append_layout ~/.config/i3/layouts/workspace-0.json'"
+# }
+
+# power management
+# {
+    bindsym $win+L exec --no-startup-id "~/.config/i3/scripts/lock.sh"
+    bindsym XF86PowerOff exec --no-startup-id "~/.config/i3/scripts/shutdown_menu.sh"
+    bindsym Mod2+Mod4+j exec --no-startup-id "~/.config/i3/scripts/change_screen.sh"
+# }
+
+# layouts
+# {
+    bindsym $win+F1 exec --no-startup-id "~/.config/i3/scripts/layout.sh bepo"
+    bindsym $win+F2 exec --no-startup-id "~/.config/i3/scripts/layout.sh us"
+    bindsym $win+F3 exec --no-startup-id "~/.config/i3/scripts/layout.sh fr"
+# }
+
+# apps
+# {
+    bindsym $win+F exec firefox
+    bindsym $win+G exec gvim
+    bindsym $win+E exec thunar
+    bindsym $win+m exec spotify
+# }
+
+# startup
+# {
+    exec --no-startup-id "numlockx"
+    exec --no-startup-id "xbindkeys"
+    exec --no-startup-id "nitrogen --restore"
+    exec --no-startup-id "redshift"
+    exec --no-startup-id "xrdb merge ~/.Xresources"
+    exec --no-startup-id "pcmanfm -d"
+    exec --no-startup-id "eval `ssh-agent`"
+    exec --no-startup-id "nm-applet"
+
+    exec --no-startup-id "discord-canary"
+    exec --no-startup-id "thunderbird"
+    exec --no-startup-id "termite --exec htop --title htop"
+# }
